@@ -20,9 +20,9 @@ public class SecurityConfig {
 
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**").permitAll()
-                .mvcMatchers("/").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated();
+                // .mvcMatchers("/").permitAll()
+                .anyRequest().permitAll();
 
         return http.build();
     }
