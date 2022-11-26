@@ -85,6 +85,16 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- QueryDSL -->
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -100,6 +110,24 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+
+			<!-- QueryDSL Plugin -->
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<!-- Q도메인을 뽑아낼 위치 -->
+							<outputDirectory>target/generated-sources/java</outputDirectory>
+							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

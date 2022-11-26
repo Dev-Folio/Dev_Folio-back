@@ -1,4 +1,4 @@
-package com.inhatc.dev_folio.config.security;
+package com.inhatc.dev_folio.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

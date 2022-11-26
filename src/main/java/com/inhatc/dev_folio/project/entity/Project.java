@@ -7,9 +7,11 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -25,6 +27,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -32,6 +35,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@ToString
 public class Project {
     @Id
     @GeneratedValue
@@ -65,11 +69,11 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<ProjectTag> projectTags;
 
-    @OneToMany(mappedBy = "contributedProject")
-    private List<Member> contributedMembers;
+    @OneToMany(mappedBy = "project")
+    private List<ProjectMember> contributedMembers;
 
-    @OneToOne(mappedBy = "writedProject")
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "writed_member_id", nullable = false)
     private Member writedMember;
 
     @OneToMany(mappedBy = "project")
@@ -85,5 +89,4 @@ public class Project {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime modifiedDate;
-
 }

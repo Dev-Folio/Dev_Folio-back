@@ -1,6 +1,7 @@
 package com.inhatc.dev_folio.member.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -19,6 +21,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.inhatc.dev_folio.member.constant.Role;
+import com.inhatc.dev_folio.project.entity.ProjectMember;
 import com.inhatc.dev_folio.project.entity.Project;
 
 import lombok.AllArgsConstructor;
@@ -58,13 +61,11 @@ public class Member {
     @JoinColumn(name = "profile_image_id")
     private ProfileImage profileImage;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contributed_project_id")
-    private Project contributedProject;
+    @OneToMany(mappedBy = "member")
+    private List<ProjectMember> contributedProjects;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writed_project_id")
-    private Project writedProject;
+    @OneToMany(mappedBy = "writedMember")
+    private List<Project> writedProjects;
 
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
     private ChangePassword passwordChange;
