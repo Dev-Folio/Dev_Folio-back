@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -15,16 +16,22 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.inhatc.dev_folio.category.entity.Comment;
 import com.inhatc.dev_folio.member.entity.Member;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Project {
     @Id
     @GeneratedValue
@@ -47,11 +54,13 @@ public class Project {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int views;
+    @Builder.Default
+    private int views = 0;
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int likes;
+    @Builder.Default
+    private int likes = 0;
 
     @OneToMany(mappedBy = "project")
     private List<ProjectTag> projectTags;

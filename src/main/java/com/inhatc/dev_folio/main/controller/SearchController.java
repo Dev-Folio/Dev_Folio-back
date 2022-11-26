@@ -21,9 +21,9 @@ public class SearchController {
     private final ProjectService projectService;
 
     @GetMapping("/search")
-    public List<ProjectDto> search(@RequestBody SearchDto searchDto) {
+    public ProjectDto.Projects search(@RequestBody SearchDto searchDto) {
         log.info(searchDto.toString());
-        List<ProjectDto> list = projectService.getSearchData();
-        return list;
+        ProjectDto.Projects projects = projectService.getSearchData(searchDto);
+        return projects;
     }
 }
