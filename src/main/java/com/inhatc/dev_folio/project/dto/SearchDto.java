@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.inhatc.dev_folio.member.constant.Order;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -16,7 +15,7 @@ public class SearchDto {
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Detail {
         private List<Long> tags;
-        private String query;
+        private String keyword;
         private List<Long> members;
     }
 
@@ -24,7 +23,7 @@ public class SearchDto {
     @ToString
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Fast {
-        private String query;
-        private Long memberId;
+        private String keyword;
+        private List<Long> members;
     }
 }
