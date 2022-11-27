@@ -26,8 +26,7 @@ public class ProjectController {
             @RequestBody SearchDto.Detail searchDto,
             @PageableDefault(size = 12) Pageable pageable) {
         log.info("searchDto >>> " + searchDto.toString());
-        projectService.search(searchDto, pageable);
-        return null;
+        return projectService.search(searchDto, pageable);
     }
 
     @GetMapping("/project/{id}")

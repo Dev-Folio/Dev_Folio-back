@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.inhatc.dev_folio.member.dto.MemberDto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -17,6 +19,7 @@ public class ProjectDto {
     @Getter
     @ToString
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @Builder
     public static class Projects {
         private List<Card> projects;
     }
@@ -24,13 +27,13 @@ public class ProjectDto {
     @Getter
     @ToString
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @Builder
     public static class Card {
         private Long projectId;
         private String thumbnail;
         private String projectName;
         private List<TagDto> tags;
-        private String profileImage;
-        private String profileName;
+        private MemberDto.Preview writedMember;
         private int views;
         private int likes;
     }
