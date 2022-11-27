@@ -27,6 +27,7 @@ public interface ProjectMapper {
     @Mapping(source = "tag.id", target = "tagId")
     @Mapping(source = "tag.name", target = "name")
     @Mapping(source = "tag.color", target = "color")
+    @Mapping(target = "categories", ignore = true)
     TagDto projectTagToTagDto(ProjectTag projectTag);
 
     List<TagDto> projectTagListToTagDtoList(List<ProjectTag> projectTags);

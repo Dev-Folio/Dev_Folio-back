@@ -11,12 +11,10 @@ import lombok.ToString;
 
 @Getter
 @ToString
-// jackson이라는 라이브러리.자바랑 json 쓰는 거 알아서 맞춰주는 라이브러리(tagId -> tag_id로 지가 맞춰줌)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Builder
-public class TagDto {
-    private Long tagId;
+public class CategoryDto {
+    private Long categoryId;
     private String name;
-    private String color;
-    private List<Long> categories;
+    private List<Long> tags;
 }

@@ -7,10 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.inhatc.dev_folio.member.dto.MemberDto;
-import com.inhatc.dev_folio.member.dto.MemberDto.Preview;
-import com.querydsl.core.annotations.QueryProjection;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;

@@ -36,5 +36,4 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag")
     private List<CategoryTag> categoryTags;
-
 }
