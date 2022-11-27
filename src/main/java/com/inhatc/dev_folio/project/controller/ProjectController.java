@@ -1,5 +1,6 @@
 package com.inhatc.dev_folio.project.controller;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping("/search")
-    public ProjectDto.Projects search(
+    public Page<ProjectDto.Card> search(
             @RequestBody SearchDto.Detail searchDto,
             @PageableDefault(size = 12) Pageable pageable) {
         log.info("searchDto >>> " + searchDto.toString());

@@ -2,8 +2,10 @@ package com.inhatc.dev_folio.project.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 
 import com.inhatc.dev_folio.project.dto.SearchDto;
 import com.inhatc.dev_folio.project.entity.Project;
@@ -21,6 +23,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class QProjectRepositoryImpl implements QProjectRepository {
     private final JPAQueryFactory jpaQueryFactory;
+
+    private CustomJPAQuery<Project> customProjectJPAQuery = new CustomJPAQuery<>();
+    private CustomJPAQuery<Long> customLongJPAQuery = new CustomJPAQuery<>();
 
     /*
      * SELECT * FROM project p
@@ -47,12 +52,26 @@ public class QProjectRepositoryImpl implements QProjectRepository {
      * ORDER BY created_date ASC
      */
     @Override
-    public List<Project> search(SearchDto.Detail searchDto, Pageable pageable) {
+    public Page<Project> search(SearchDto.Detail searchDto, Pageable pageable) {
+        QProject project = QProject.project;
+
+        JPAQuery<Project> contentsQuery = jpaQueryFactory.selectFrom(project);
+        JPAQuery<Long> countQuery = jpaQueryFactory.select(project.count()).from(project);
+
+        JPAQuery<Project> whereContentsQuery = customProjectJPAQuery.addWhere(contentsQuery, searchDto, pageable);
+        JPAQuery<Long> whereCountQuery = customLongJPAQuery.addWhere(countQuery, searchDto, pageable);
+
+        return PageableExecutionUtils.getPage(whereContentsQuery.fetch(), pageable, () -> whereCountQuery.fetchOne());
+    }
+
+}
+
+class CustomJPAQuery<T> extends JPAQuery<T> {
+
+    public JPAQuery<T> addWhere(JPAQuery<T> query, SearchDto.Detail searchDto, Pageable pageable) {
         QProjectTag projectTag = QProjectTag.projectTag;
         QProject project = QProject.project;
         QProjectMember projectMember = QProjectMember.projectMember;
-
-        JPAQuery<Project> query = jpaQueryFactory.selectFrom(project);
 
         // tags가 주어졌을 경우
         // projectTag에서 검색
@@ -109,7 +128,7 @@ public class QProjectRepositoryImpl implements QProjectRepository {
                 }
             }
         }
-        return query.fetch();
-    }
 
+        return query;
+    }
 }
