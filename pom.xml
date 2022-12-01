@@ -15,6 +15,10 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
+		<lombok.version>1.18.24</lombok.version>
+		<mapstruct.version>1.5.3.Final</mapstruct.version>
+		<mapstruct-lombok.version>0.2.0</mapstruct-lombok.version>
+		<jackson.version>2.14.1</jackson.version>
 	</properties>
 	<dependencies>
 
@@ -22,15 +26,13 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.14.1</version>
+			<version>${jackson.version}</version>
 		</dependency>
-
 
 		<!-- Validation -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-			<version>2.7.5</version>
 		</dependency>
 
 		<!-- JPA -->
@@ -71,6 +73,7 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+			<version>${lombok.version}</version>
 		</dependency>
 
 		<!-- Test -->
@@ -99,7 +102,13 @@
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>1.5.3.Final</version>
+			<version>${mapstruct.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok-mapstruct-binding</artifactId>
+			<version>${mapstruct-lombok.version}</version>
 		</dependency>
 
 	</dependencies>
@@ -125,6 +134,7 @@
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.1.3</version>
 				<executions>
 					<execution>
 						<goals>
@@ -139,6 +149,7 @@
 				</executions>
 			</plugin>
 
+            <!-- Mapstruct plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -150,7 +161,17 @@
 						<path>
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
-							<version>1.5.3.Final</version>
+							<version>${mapstruct.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>${mapstruct-lombok.version}</version>
 						</path>
 						<!-- other annotation processors -->
 					</annotationProcessorPaths>
