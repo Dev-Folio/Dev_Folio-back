@@ -3,17 +3,7 @@ package com.inhatc.dev_folio.member.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -34,13 +24,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "member")
 public class Member {
     @Id
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -63,10 +54,10 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<ProjectMember> contributedProjects;
 
-    @OneToMany(mappedBy = "writedMember")
-    private List<Project> writedProjects;
+    @OneToMany(mappedBy = "wroteMember")
+    private List<Project> wroteProjects;
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "member")
     private ChangePassword passwordChange;
 
     @CreatedDate

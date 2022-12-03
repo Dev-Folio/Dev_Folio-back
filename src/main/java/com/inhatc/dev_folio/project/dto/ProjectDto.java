@@ -32,7 +32,7 @@ public class ProjectDto {
         private String thumbnail;
         private String projectName;
         private List<TagDto> tags;
-        private MemberDto.Preview writedMember;
+        private MemberDto.Preview wroteMember;
         private int views;
         private int likes;
     }
@@ -40,10 +40,11 @@ public class ProjectDto {
     @Getter
     @ToString
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @Builder
     public static class Project {
         private String thumbnail;
         private String projectName;
-        private MemberDto.Preview writedMember;
+        private MemberDto.Preview wroteMember;
         private List<MemberDto.Preview> contributedMembers;
         private LocalDate startDate;
         private LocalDate endDate;

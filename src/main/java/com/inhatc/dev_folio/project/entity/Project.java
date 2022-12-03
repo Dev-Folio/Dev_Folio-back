@@ -4,15 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
@@ -34,6 +26,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "project")
 @ToString
 public class Project {
     @Id
@@ -72,8 +65,8 @@ public class Project {
     private List<ProjectMember> contributedMembers;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writed_member_id", nullable = false)
-    private Member writedMember;
+    @JoinColumn(name = "wrote_member_id", nullable = false)
+    private Member wroteMember;
 
     @OneToMany(mappedBy = "project")
     private List<Comment> comments;

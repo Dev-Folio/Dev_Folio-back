@@ -24,8 +24,8 @@ import lombok.RequiredArgsConstructor;
 public class QProjectRepositoryImpl implements QProjectRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
-    private CustomJPAQuery<Project> customProjectJPAQuery = new CustomJPAQuery<>();
-    private CustomJPAQuery<Long> customLongJPAQuery = new CustomJPAQuery<>();
+    private final CustomJPAQuery<Project> customProjectJPAQuery = new CustomJPAQuery<>();
+    private final CustomJPAQuery<Long> customLongJPAQuery = new CustomJPAQuery<>();
 
     /*
      * SELECT * FROM project p
@@ -61,7 +61,7 @@ public class QProjectRepositoryImpl implements QProjectRepository {
         JPAQuery<Project> whereContentsQuery = customProjectJPAQuery.addWhere(contentsQuery, searchDto, pageable);
         JPAQuery<Long> whereCountQuery = customLongJPAQuery.addWhere(countQuery, searchDto, pageable);
 
-        return PageableExecutionUtils.getPage(whereContentsQuery.fetch(), pageable, () -> whereCountQuery.fetchOne());
+        return PageableExecutionUtils.getPage(whereContentsQuery.fetch(), pageable, whereCountQuery::fetchOne);
     }
 
 }
@@ -91,7 +91,7 @@ class CustomJPAQuery<T> extends JPAQuery<T> {
         List<Long> memberIds = searchDto.getMembers();
         if (!memberIds.isEmpty()) {
             query.where(
-                    project.writedMember.id.in(memberIds)
+                    project.wroteMember.id.in(memberIds)
                             .or(project.id.in(
                                     JPAExpressions.select(projectMember.member.id)
                                             .from(projectMember)
@@ -116,14 +116,9 @@ class CustomJPAQuery<T> extends JPAQuery<T> {
                 for (Sort.Order order : pageable.getSort()) {
                     Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
                     switch (order.getProperty()) {
-                        case "likes":
-                            query.orderBy(new OrderSpecifier<>(direction, project.likes));
-                            break;
-                        case "date":
-                            query.orderBy(new OrderSpecifier<>(direction, project.createdDate));
-                            break;
-                        default:
-                            throw new RuntimeException("sort 파라미터 잘못됨");
+                        case "likes" -> query.orderBy(new OrderSpecifier<>(direction, project.likes));
+                        case "date" -> query.orderBy(new OrderSpecifier<>(direction, project.createdDate));
+                        default -> throw new RuntimeException("sort 파라미터 잘못됨");
                     }
                 }
             }

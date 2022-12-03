@@ -33,6 +33,7 @@ public class ProjectController {
     @GetMapping("/project/{id}")
     public ProjectDto.Project getProject(@PathVariable Long id) {
         log.info(id.toString());
-        return new ProjectDto.Project();
+        ProjectDto.Project project = projectService.getProject(id);
+        return project;
     };
 }

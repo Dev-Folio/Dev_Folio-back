@@ -2,6 +2,7 @@ package com.inhatc.dev_folio.project.service;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +16,11 @@ import com.inhatc.dev_folio.project.repository.ProjectRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
@@ -29,4 +33,11 @@ public class ProjectService {
         return new PageImpl<>(cards, projectPage.getPageable(), projectPage.getTotalPages());
     }
 
+    public ProjectDto.Project getProject(Long id) {
+        Project project = projectRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        log.info(project.toString());
+        ProjectDto.Project projectDto = ProjectMapper.INSTANCE.projectToProjectDto(project);
+        log.info(projectDto.toString());
+        return projectDto;
+    }
 }

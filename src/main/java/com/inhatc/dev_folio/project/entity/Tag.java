@@ -2,11 +2,7 @@ package com.inhatc.dev_folio.project.entity;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.inhatc.dev_folio.category.entity.CategoryTag;
 
@@ -20,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "tag")
 public class Tag {
     @Id
     @GeneratedValue

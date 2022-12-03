@@ -2,6 +2,8 @@ package com.inhatc.dev_folio.project.mapper;
 
 import java.util.List;
 
+import com.inhatc.dev_folio.category.entity.CategoryTag;
+import com.inhatc.dev_folio.project.entity.GithubUrl;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -35,4 +37,12 @@ public interface ProjectMapper {
     @Mapping(source = "id", target = "memberId")
     @Mapping(source = "profileImage.url", target = "image")
     MemberDto.Preview memberToPreview(Member member);
+
+    @Mapping(target = "tags", source = "projectTags")
+    @Mapping(target = "projectName", source = "name")
+    @Mapping(target = "github", source = "githubUrls")
+    ProjectDto.Project projectToProjectDto(Project project);
+
+    static String getGithubUrl(GithubUrl githubUrl) {return githubUrl.getUrl();}
+    List<String> githubUrlListToStringList(List<GithubUrl> githubUrls);
 }
