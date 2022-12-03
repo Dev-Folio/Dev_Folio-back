@@ -8,5 +8,4 @@ import com.inhatc.dev_folio.project.entity.Project;
 import com.inhatc.dev_folio.project.entity.ProjectTag;
 
 public interface ProjectTagRepository extends JpaRepository<ProjectTag, Long> {
-    List<Project> findByTagId(Long tagId);
 }

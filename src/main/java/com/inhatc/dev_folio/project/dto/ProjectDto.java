@@ -57,4 +57,12 @@ public class ProjectDto {
         private LocalDateTime createdDate;
         private LocalDateTime modifiedDate;
     }
+
+    @Getter
+    @ToString
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @Builder
+    public static class Like {
+        private boolean like;
+    }
 }

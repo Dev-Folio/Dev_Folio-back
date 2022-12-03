@@ -34,10 +34,19 @@ public class ProjectService {
     }
 
     public ProjectDto.Project getProject(Long id) {
-        Project project = projectRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        log.info(project.toString());
-        ProjectDto.Project projectDto = ProjectMapper.INSTANCE.projectToProjectDto(project);
-        log.info(projectDto.toString());
-        return projectDto;
+        Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당 id의 프로젝트가 없습니다."));
+        return ProjectMapper.INSTANCE.projectToProjectDto(project);
+    }
+
+    public ProjectDto.Like getLike(Long id) {
+        // TODO: 회원가입 기능이 구현된 후 만들것.
+        // Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당 id의 프로젝트가 없습니다."));
+        // return project.getLikes();
+        return null;
+    }
+
+    public ProjectDto.Like clickLike(Long id) {
+        // TODO: 회원가입 기능이 구현된 후 만들것.
+        return null;
     }
 }

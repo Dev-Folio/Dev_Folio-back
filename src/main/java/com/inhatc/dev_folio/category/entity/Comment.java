@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class Comment {
     @Id
     @GeneratedValue
-    @Column(name = "commnet_id")
+    @Column(name = "comment_id")
     private Long id;
 
     @Column(nullable = false)
@@ -35,7 +35,7 @@ public class Comment {
 
     @Column(nullable = false)
     @ColumnDefault("false")
-    private boolean deleted;
+    private boolean deleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
