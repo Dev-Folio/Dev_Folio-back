@@ -55,6 +55,13 @@ public class CommentService {
         if (comment.isDeleted()) {
             throw new IllegalStateException("이미 삭제된 댓글입니다.");
         }
-        // TODO
+        // TODO 로그인된 사용자 판별해서 수정 권한 있는지 확인하기
+        comment.updateContents(contents.getContents());
+        commentRepository.save(comment);
+    }
+
+    public void deleteComment(Long commentId) {
+        // TODO 로그인된 사용자 판별해서 삭제 권한 있는지 확인하기
+        commentRepository.deleteById(commentId);
     }
 }

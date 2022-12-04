@@ -35,6 +35,7 @@ public class Comment {
 
     @Column(nullable = false)
     @ColumnDefault("false")
+    @Builder.Default
     private boolean deleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,4 +53,8 @@ public class Comment {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime modifiedDate;
+
+    public void updateContents(String contents){
+        this.contents = contents;
+    }
 }

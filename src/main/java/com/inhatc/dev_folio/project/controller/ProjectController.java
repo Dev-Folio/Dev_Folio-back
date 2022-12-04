@@ -1,7 +1,5 @@
 package com.inhatc.dev_folio.project.controller;
 
-import com.inhatc.dev_folio.project.dto.CommentDto;
-import com.inhatc.dev_folio.project.service.CommentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,7 +20,6 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
-    private final CommentService commentService;
 
     @GetMapping("/search")
     public Page<ProjectDto.Card> search(
@@ -48,23 +45,5 @@ public class ProjectController {
     public ProjectDto.Like clickLike(@PathVariable Long id) {
         log.info("clickLike(id:{})", id.toString());
         return projectService.clickLike(id);
-    }
-
-    @GetMapping("/project/{id}/comment")
-    public List<CommentDto.View> getComment(@PathVariable Long id){
-        log.info("getComment(id:{})", id.toString());
-        return commentService.getComment(id);
-    }
-
-    @PostMapping("/project/{projectId}/comment")
-    public void writeComment(@PathVariable Long projectId, CommentDto.Contents contents){
-        log.info("writeComment(projectId:{})", projectId.toString());
-        commentService.writeComment(projectId, contents);
-    }
-
-    @PutMapping("/project/comment/{commentId}")
-    public void updateComment(@PathVariable Long commentId, CommentDto.Contents commentDto){
-        log.info("updateComment(commentId:{})", commentId.toString());
-        commentService.updateComment(commentId, commentDto);
     }
 }
