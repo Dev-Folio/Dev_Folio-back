@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "change_password")
 public class ChangePassword {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "change_password_id")
     private Long id;
 

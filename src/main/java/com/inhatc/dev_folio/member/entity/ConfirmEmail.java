@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "confirm_email")
 public class ConfirmEmail {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "confirm_email_id")
     private Long id;
 

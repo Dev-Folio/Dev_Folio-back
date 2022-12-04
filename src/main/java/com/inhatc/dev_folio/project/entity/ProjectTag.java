@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "project_tag")
 public class ProjectTag {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_tag_id")
     private Long id;
 

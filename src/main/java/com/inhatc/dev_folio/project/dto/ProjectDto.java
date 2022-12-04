@@ -19,14 +19,6 @@ public class ProjectDto {
     @ToString
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     @Builder
-    public static class Projects {
-        private List<Card> projects;
-    }
-
-    @Getter
-    @ToString
-    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    @Builder
     public static class Card {
         private Long projectId;
         private String thumbnail;
@@ -41,7 +33,7 @@ public class ProjectDto {
     @ToString
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     @Builder
-    public static class Project {
+    public static class Detail {
         private String thumbnail;
         private String projectName;
         private MemberDto.View wroteMember;
@@ -65,4 +57,29 @@ public class ProjectDto {
     public static class Like {
         private boolean like;
     }
+
+    @Getter
+    @ToString
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @Builder
+    public static class ProjectId {
+        private Long projectId;
+    }
+
+    @Getter
+    @ToString
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @Builder
+    public static class ProjectForm {
+        private String thumbnail;
+        private String projectName;
+        private List<Long> contributedMembers;
+        private LocalDate startDate;
+        private LocalDate endDate;
+        private List<Long> tags;
+        private List<String> github;
+        private String detail;
+        private String contents;
+    }
+
 }

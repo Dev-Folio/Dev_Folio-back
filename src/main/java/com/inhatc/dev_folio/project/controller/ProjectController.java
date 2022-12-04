@@ -3,6 +3,8 @@ package com.inhatc.dev_folio.project.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import com.inhatc.dev_folio.project.dto.ProjectDto;
@@ -11,8 +13,6 @@ import com.inhatc.dev_folio.project.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,9 +30,21 @@ public class ProjectController {
     }
 
     @GetMapping("/project/{id}")
-    public ProjectDto.Project getProject(@PathVariable Long id) {
+    public ProjectDto.Detail getProject(@PathVariable Long id) {
         log.info("getProject(id:{})", id.toString());
         return projectService.getProject(id);
+    }
+
+    @PostMapping("/project")
+    public ProjectDto.ProjectId postProject(@RequestBody ProjectDto.ProjectForm projectForm){
+        log.info("postProject(createProject:{})", projectForm.toString());
+        return projectService.saveProject(projectForm);
+    }
+
+    @PutMapping("/project/{projectId}")
+    public void putProject(@PathVariable Long projectId, @RequestBody ProjectDto.ProjectForm projectForm){
+        log.info("putProject(projectId:{}, createProject:{})", projectId, projectForm.toString());
+        projectService.updateProject(projectId, projectForm);
     }
 
     @GetMapping("/project/{id}/like")
@@ -42,7 +54,7 @@ public class ProjectController {
     }
 
     @PostMapping("/project/{id}/like")
-    public ProjectDto.Like clickLike(@PathVariable Long id) {
+    public ProjectDto.Like postLike(@PathVariable Long id) {
         log.info("clickLike(id:{})", id.toString());
         return projectService.clickLike(id);
     }

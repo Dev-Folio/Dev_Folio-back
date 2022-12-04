@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "github_url")
 public class GithubUrl {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "github_id")
     private Long id;
 

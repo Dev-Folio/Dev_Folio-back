@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "profile_image")
 public class ProfileImage {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_image_id")
     private Long id;
 

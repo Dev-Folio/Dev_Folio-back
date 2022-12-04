@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.inhatc.dev_folio.project.dto.ProjectDto;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -28,7 +29,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "project")
 public class Project {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_id")
     private Long id;
 
@@ -79,4 +80,13 @@ public class Project {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime modifiedDate;
+
+    public void updateProject(ProjectDto.ProjectForm projectForm){
+        this.thumbnail = projectForm.getThumbnail();
+        this.name = projectForm.getProjectName();
+        this.startDate = projectForm.getStartDate();
+        this.endDate = projectForm.getEndDate();
+        this.detail = projectForm.getDetail();
+        this.contents = projectForm.getContents();
+    }
 }

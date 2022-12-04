@@ -35,7 +35,7 @@ public interface ProjectMapper extends MemberMapper {
     @Mapping(target = "tags", source = "projectTags")
     @Mapping(target = "projectName", source = "name")
     @Mapping(target = "github", source = "githubUrls")
-    ProjectDto.Project projectToProjectDto(Project project);
+    ProjectDto.Detail projectToDetail(Project project);
 
     static String getGithubUrl(GithubUrl githubUrl) {return githubUrl.getUrl();}
     List<String> githubUrlListToStringList(List<GithubUrl> githubUrls);

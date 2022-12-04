@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class ProjectMember {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_member_id")
     private Long id;
 
