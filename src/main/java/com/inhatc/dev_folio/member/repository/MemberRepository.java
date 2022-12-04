@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByEmailContainsOrNameContains(String email, String Name);
+
+    Member findByEmail(String email);
 }

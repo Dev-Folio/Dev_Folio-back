@@ -15,7 +15,7 @@ import com.inhatc.dev_folio.project.entity.Project;
 import com.inhatc.dev_folio.project.entity.ProjectMember;
 
 @Entity
-@Getter
+@Getter @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -63,4 +63,5 @@ public class Member {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime modifiedDate;
+
 }
