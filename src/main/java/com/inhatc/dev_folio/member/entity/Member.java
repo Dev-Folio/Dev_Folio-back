@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -12,11 +13,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.inhatc.dev_folio.member.constant.Role;
 import com.inhatc.dev_folio.project.entity.Project;
 import com.inhatc.dev_folio.project.entity.ProjectMember;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Getter

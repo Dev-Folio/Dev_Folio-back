@@ -18,7 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Getter
@@ -27,7 +26,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "project")
-@ToString
 public class Project {
     @Id
     @GeneratedValue

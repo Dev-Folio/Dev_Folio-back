@@ -32,7 +32,7 @@ public class ProjectDto {
         private String thumbnail;
         private String projectName;
         private List<TagDto> tags;
-        private MemberDto.Preview wroteMember;
+        private MemberDto.View wroteMember;
         private int views;
         private int likes;
     }
@@ -44,8 +44,8 @@ public class ProjectDto {
     public static class Project {
         private String thumbnail;
         private String projectName;
-        private MemberDto.Preview wroteMember;
-        private List<MemberDto.Preview> contributedMembers;
+        private MemberDto.View wroteMember;
+        private List<MemberDto.View> contributedMembers;
         private LocalDate startDate;
         private LocalDate endDate;
         private List<TagDto> tags;

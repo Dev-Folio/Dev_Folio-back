@@ -36,7 +36,7 @@ class DevFolioApplicationTests {
     void saveTestData() {
         // Save Members
         Member admin = Member.builder()
-                .email("admin@test.com")
+                .email("201845092@itc.ac.kr")
                 .info("테스트 관리자입니다.")
                 .phone("010-0000-0000")
                 .name("관리자")
@@ -45,7 +45,7 @@ class DevFolioApplicationTests {
                 .build();
         memberRepository.save(admin);
         Member member = Member.builder()
-                .email("member@test.com")
+                .email("201845093@itc.ac.kr")
                 .info("테스트 멤버입니다.")
                 .phone("010-0000-0000")
                 .name("멤버")
