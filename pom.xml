@@ -111,6 +111,17 @@
 			<version>${mapstruct-lombok.version}</version>
 		</dependency>
 
+		 <!--이메일 사용 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+	<!--	이메일 사용을 위한 spring-context-support-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
