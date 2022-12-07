@@ -9,6 +9,9 @@ import com.inhatc.dev_folio.member.repository.MemberRepository;
 import com.inhatc.dev_folio.member.repository.ProfileImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -17,7 +20,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class MemberService {
+public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final ProfileImageRepository profileImageRepository;
 
@@ -28,6 +31,7 @@ public class MemberService {
     }
 
     public Member saveMember(Member member){
+//        중복된 멤버 확인
         duplicatedMember(member);
 //       이메일 보내기 확인
         return memberRepository.save(member);
@@ -67,4 +71,18 @@ public class MemberService {
         foundMember.updateInfo(setProfile.getInfo());
         memberRepository.save(foundMember);
     }
+
+//    로그인
+    @Override
+    public UserDetails loadUserByUsername(String email){
+        log.info("=========>" + email + "제대로 읽고 있나요");
+                Member member = memberRepository.findByEmail(email);
+
+                return User.builder()
+                        .username(member.getEmail())
+                        .password(member.getPassword())
+                        .roles(member.getRole().toString())
+                        .build();
+    }
+
 }
