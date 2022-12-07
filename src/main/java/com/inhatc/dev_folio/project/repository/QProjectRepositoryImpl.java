@@ -2,6 +2,7 @@ package com.inhatc.dev_folio.project.repository;
 
 import java.util.List;
 
+import com.inhatc.dev_folio.constant.ErrorMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -118,7 +119,7 @@ class CustomJPAQuery<T> extends JPAQuery<T> {
                     switch (order.getProperty()) {
                         case "likes" -> query.orderBy(new OrderSpecifier<>(direction, project.likes));
                         case "date" -> query.orderBy(new OrderSpecifier<>(direction, project.createdDate));
-                        default -> throw new RuntimeException("sort 파라미터 잘못됨");
+                        default -> throw new RuntimeException(ErrorMessage.PROJECT_BAD_SEARCH_PARAMETER.getMessage());
                     }
                 }
             }

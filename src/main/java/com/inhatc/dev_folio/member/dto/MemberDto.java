@@ -27,4 +27,29 @@ public class MemberDto {
     public static class Search {
         private String query;
     }
+
+    @Getter
+    @ToString
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GetProfile {
+        private String image;
+        private String name;
+        private String email;
+        private String info;
+    }
+
+    @Getter
+    @ToString
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SetProfile {
+        private String image;
+        private String info;
+    }
+
 }

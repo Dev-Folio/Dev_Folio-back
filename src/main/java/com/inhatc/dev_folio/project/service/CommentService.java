@@ -1,6 +1,7 @@
 package com.inhatc.dev_folio.project.service;
 
 import com.inhatc.dev_folio.category.entity.Comment;
+import com.inhatc.dev_folio.constant.ErrorMessage;
 import com.inhatc.dev_folio.member.entity.Member;
 import com.inhatc.dev_folio.member.repository.MemberRepository;
 import com.inhatc.dev_folio.project.dto.CommentDto;
@@ -26,7 +27,7 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByProjectId(id);
 
         // TODO: 로그인 기능 구현 후 현재 로그인 된 사용자로 교체
-        Member member = memberRepository.findById(2L).orElseThrow(() -> new EntityNotFoundException("해당 id의 유저가 없습니다."));
+        Member member = memberRepository.findById(2L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
 
         CommentMapper commentMapper = CommentMapper.INSTANCE;
         List<CommentDto.View> views = new ArrayList<>();
@@ -40,7 +41,7 @@ public class CommentService {
     }
 
     public void writeComment(Long projectId, CommentDto.Contents contents) {
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("해당 id의 프로젝트가 없습니다."));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
         Comment newComment = Comment.builder()
                 .contents(contents.getContents())
                 // TODO: 로그인 기능이 완료되면 Member도 집어넣기
@@ -51,9 +52,9 @@ public class CommentService {
     }
 
     public void updateComment(Long commentId, CommentDto.Contents contents) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new EntityNotFoundException("해당 id의 댓글이 없습니다."));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.COMMENT_NOT_FOUND.getMessage()));
         if (comment.isDeleted()) {
-            throw new IllegalStateException("이미 삭제된 댓글입니다.");
+            throw new IllegalStateException(ErrorMessage.COMMENT_ALREADY_DELETED.getMessage());
         }
         // TODO 로그인된 사용자 판별해서 수정 권한 있는지 확인하기
         comment.updateContents(contents.getContents());

@@ -24,4 +24,8 @@ public class ProfileImage {
 
     @OneToOne(mappedBy = "profileImage")
     private Member member;
+
+    public void updateUrl(String url){
+        this.url = url;
+    }
 }

@@ -18,4 +18,7 @@ public interface MemberMapper {
     MemberDto.View memberToView(Member member);
 
     List<MemberDto.View> memberListToViewList(List<Member> members);
+
+    @Mapping(target = "image", source = "profileImage.url")
+    MemberDto.GetProfile memberToProfilePage(Member member);
 }

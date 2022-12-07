@@ -47,6 +47,12 @@ public class ProjectController {
         projectService.updateProject(projectId, projectForm);
     }
 
+    @DeleteMapping("/project/{projectId}")
+    public void deleteProject(@PathVariable Long projectId){
+        log.info("deleteProject(projectId:{})", projectId);
+        projectService.deleteProject(projectId);
+    }
+
     @GetMapping("/project/{id}/like")
     public ProjectDto.Like getLike(@PathVariable Long id) {
         log.info("getLike(id:{})", id.toString());

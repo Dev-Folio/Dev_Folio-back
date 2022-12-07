@@ -27,9 +27,9 @@ public class CommentController {
     }
 
     @PutMapping("/project/comment/{commentId}")
-    public void updateComment(@PathVariable Long commentId, CommentDto.Contents commentDto){
+    public void updateComment(@PathVariable Long commentId, CommentDto.Contents contents){
         log.info("updateComment(commentId:{})", commentId.toString());
-        commentService.updateComment(commentId, commentDto);
+        commentService.updateComment(commentId, contents);
     }
 
     @DeleteMapping("/project/comment/{commentId}")

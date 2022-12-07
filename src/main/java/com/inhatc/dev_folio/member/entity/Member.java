@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.inhatc.dev_folio.member.dto.MemberDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,7 +16,8 @@ import com.inhatc.dev_folio.project.entity.Project;
 import com.inhatc.dev_folio.project.entity.ProjectMember;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -64,4 +66,7 @@ public class Member {
     @Column(nullable = false)
     private LocalDateTime modifiedDate;
 
+    public void updateInfo(String info){
+        this.info = info;
+    }
 }

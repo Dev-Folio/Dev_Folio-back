@@ -2,6 +2,7 @@ package com.inhatc.dev_folio.project.service;
 
 import java.util.List;
 
+import com.inhatc.dev_folio.constant.ErrorMessage;
 import com.inhatc.dev_folio.member.entity.Member;
 import com.inhatc.dev_folio.member.repository.MemberRepository;
 import com.inhatc.dev_folio.project.entity.*;
@@ -41,7 +42,7 @@ public class ProjectService {
     }
 
     public ProjectDto.Detail getProject(Long id) {
-        Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당 id의 프로젝트가 없습니다."));
+        Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
         return ProjectMapper.INSTANCE.projectToDetail(project);
     }
 
@@ -59,7 +60,7 @@ public class ProjectService {
 
     public ProjectDto.ProjectId saveProject(ProjectDto.ProjectForm projectForm) {
         // TODO: 로그인 기능 구현되면 wroteMember 채우기
-        Member wroteMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException("해당 id의 멤버가 없습니다."));
+        Member wroteMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
 
         List<Member> contributedMembers = memberRepository.findAllById(projectForm.getContributedMembers());
         List<Tag> tags = tagRepository.findAllById(projectForm.getTags());
@@ -103,12 +104,12 @@ public class ProjectService {
     }
 
     public void updateProject(Long projectId, ProjectDto.ProjectForm projectForm) {
-        Member wroteMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException("해당 id의 멤버가 없습니다."));
+        Member wroteMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
 
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("해당 id의 프로젝트가 없습니다."));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
 
         if (!project.getWroteMember().equals(wroteMember)){
-            throw new IllegalStateException("해당 프로젝트의 수정 권한이 없습니다.");
+            throw new IllegalStateException(ErrorMessage.PROJECT_ACCESS_DENIED.getMessage());
         }
 
         project.updateProject(projectForm);
@@ -155,5 +156,17 @@ public class ProjectService {
             githubUrlRepository.save(githubUrl);
         }
 
+    }
+
+    public void deleteProject(Long projectId) {
+        // TODO: 로그인 기능 구현 후 요청한 유저 가져오기
+        Member requestMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
+
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
+        if (project.getWroteMember().equals(requestMember)){
+            projectRepository.deleteById(projectId);
+        } else {
+            throw new IllegalStateException(ErrorMessage.PROJECT_ACCESS_DENIED.getMessage());
+        }
     }
 }
