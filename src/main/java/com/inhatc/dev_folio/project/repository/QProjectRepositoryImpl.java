@@ -91,8 +91,7 @@ class CustomJPAQuery<T> extends JPAQuery<T> {
         List<Long> memberIds = searchDto.getMembers();
         if (!memberIds.isEmpty()) {
             query.where(
-//                    에러떠서 writedMember로 바꿨음 원래는 wroteMember였음
-                    project.writedMember.id.in(memberIds)
+                    project.wroteMember.id.in(memberIds)
                             .or(project.id.in(
                                     JPAExpressions.select(projectMember.member.id)
                                             .from(projectMember)
