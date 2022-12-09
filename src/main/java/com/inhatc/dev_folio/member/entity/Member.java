@@ -45,6 +45,7 @@ public class Member {
     private String phone;
     private String info;
 
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_image_id")
     private ProfileImage profileImage;
@@ -65,6 +66,7 @@ public class Member {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime modifiedDate;
+
 
     public void updateInfo(String info){
         this.info = info;

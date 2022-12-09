@@ -31,6 +31,11 @@ public class MemberController {
     return "";
     }
 
+//    회원가입 리턴 어떻게 넣을까 고민 중이었어
+    
+//    @GetMapping("/signup")
+//    public String
+
 
     @GetMapping("/profile/{memberId}")
     public MemberDto.GetProfile getProfile(@PathVariable Long memberId) {

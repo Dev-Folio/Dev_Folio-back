@@ -7,6 +7,8 @@ import lombok.*;
 
 public class MemberDto {
 
+
+
     @Getter
     @ToString
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
