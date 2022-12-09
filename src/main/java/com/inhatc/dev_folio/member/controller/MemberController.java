@@ -5,11 +5,6 @@ import com.inhatc.dev_folio.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -25,10 +20,10 @@ public class MemberController {
         return memberService.searchMember(search);
     }
 
-//    로그인
+    //    로그인
     @GetMapping("/login")
-    public String login(){
-    return "";
+    public String login() {
+        return "";
     }
 
 //    회원가입 리턴 어떻게 넣을까 고민 중이었어
@@ -44,7 +39,7 @@ public class MemberController {
     }
 
     @PostMapping("/profile/{memberId}")
-    public void postProfile(@PathVariable Long memberId, @RequestBody MemberDto.SetProfile setProfile){
+    public void postProfile(@PathVariable Long memberId, @RequestBody MemberDto.SetProfile setProfile) {
         log.info("postProfile(memberId:{}, setProfile:{}", memberId, setProfile);
         memberService.updateProfile(memberId, setProfile);
     }

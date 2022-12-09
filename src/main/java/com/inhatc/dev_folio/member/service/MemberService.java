@@ -1,7 +1,6 @@
 package com.inhatc.dev_folio.member.service;
 
 import com.inhatc.dev_folio.constant.ErrorMessage;
-import com.inhatc.dev_folio.member.constant.Role;
 import com.inhatc.dev_folio.member.dto.MemberDto;
 import com.inhatc.dev_folio.member.dto.MemberRegDto;
 import com.inhatc.dev_folio.member.entity.Email;
@@ -9,14 +8,15 @@ import com.inhatc.dev_folio.member.entity.Member;
 import com.inhatc.dev_folio.member.entity.ProfileImage;
 import com.inhatc.dev_folio.member.exception.EmailAlreadyException;
 import com.inhatc.dev_folio.member.mapper.MemberMapper;
-import com.inhatc.dev_folio.member.repository.EmailCustomRepository;
 import com.inhatc.dev_folio.member.repository.EmailRepostitory;
 import com.inhatc.dev_folio.member.repository.MemberRepository;
 import com.inhatc.dev_folio.member.repository.ProfileImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,9 +45,9 @@ public class MemberService implements UserDetailsService {
     }
 
 
-//    이메일 중복 있는지 확인 후 이메일 보내기
-    private MemberRegDto regMember(MemberRegDto regDto){
-//        일단 중복 이메일 있는지 확인
+    //    이메일 중복 있는지 확인 후 이메일 보내기
+    private MemberRegDto regMember(MemberRegDto regDto) {
+        //        일단 중복 이메일 있는지 확인
         duplicatedMember(regDto.getEmail());
         Email email = emailRepostitory.save(
                 Email.builder()
@@ -64,23 +64,23 @@ public class MemberService implements UserDetailsService {
                 .token(email.getAuthToken())
                 .build();
     }
-    
-//    이메일 인증 실행
+
+    //    이메일 인증 실행
     @Transactional
-    public void confirmEmail(MemberRegDto regDto){
-//        이메일 인증 발급 됐는지 확인
+    public void confirmEmail(MemberRegDto regDto) {
+        //        이메일 인증 발급 됐는지 확인
         Email email = emailRepostitory.findValidAuthByEmail(regDto.getEmail(), regDto.getToken(), LocalDateTime.now())
                 .orElseThrow(EntityNotFoundException::new);
 
-//        한 번 사용했으니까 사용 다시 못 하게 막아놓는다.
+        //        한 번 사용했으니까 사용 다시 못 하게 막아놓는다.
         email.useToken();
 
     }
-    
-//    회원가입 계속 진행
-    public Member saveMember(Member member){
 
-//        로그 찍어보기 위함.
+    //    회원가입 계속 진행
+    public Member saveMember(Member member) {
+
+        //        로그 찍어보기 위함.
         Member myMember = memberRepository.save(member);
         log.info("제대로 값이 들어갔나요 " + myMember);
 
@@ -88,22 +88,22 @@ public class MemberService implements UserDetailsService {
     }
 
     private void duplicatedMember(String email) {
-//        같은 값이 존재하면 안되니까 이메일이 존재할 경우 exception을 던진다
-        if(memberRepository.findByEmail(email).isPresent())
+        //        같은 값이 존재하면 안되니까 이메일이 존재할 경우 exception을 던진다
+        if (memberRepository.findByEmail(email).isPresent())
             throw new EmailAlreadyException();
     }
 
     public MemberDto.GetProfile getMemberProfile(Long memberId) {
-        Member foundMember = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
+        Member foundMember = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
         return MemberMapper.INSTANCE.memberToProfilePage(foundMember);
     }
 
     public void updateProfile(Long memberId, MemberDto.SetProfile setProfile) {
-        Member foundMember = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
+        Member foundMember = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
         ProfileImage profileImage = foundMember.getProfileImage();
 
         // 프로필 이미지가 없을 경우엔 새로 만듦, 있을 경우 url 업데이트
-        if (profileImage == null){
+        if (profileImage == null) {
             profileImage = ProfileImage.builder()
                     .member(foundMember)
                     .url(setProfile.getImage())
@@ -117,13 +117,17 @@ public class MemberService implements UserDetailsService {
         memberRepository.save(foundMember);
     }
 
-//    로그인
+    //    로그인
     @Override
-    public UserDetails loadUserByUsername(String email){
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         log.info("=========>" + email + "제대로 읽고 있나요");
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_EMAIL_NOT_FOUND.getMessage()));
 
-
-                return null;
+        return User.builder()
+                .username(member.getEmail())
+                .password(member.getPassword())
+                .roles(member.getRole().toString())
+                .build();
     }
 
 }
