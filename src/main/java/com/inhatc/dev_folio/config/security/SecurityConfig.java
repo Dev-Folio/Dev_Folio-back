@@ -32,10 +32,10 @@ public class SecurityConfig {
         // session 인증을 사용하지 않기 때문에 Stateless로 설정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // UsernamePasswordAuthenticationFilter 전에 JwtAuthorizationFilter룰 집어넣는다.
-        http.addFilterBefore(new JwtAuthorizationFilter(memberService, jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
         // UsernamePasswordAuthenticationFilter 대신 JwtAuthenticationFilter를 집어넣는다.
         http.addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager(), jwtTokenUtil));
+        // UsernamePasswordAuthenticationFilter 전에 JwtAuthorizationFilter룰 집어넣는다.
+        http.addFilterBefore(new JwtAuthorizationFilter(memberService, jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**").permitAll()
