@@ -60,7 +60,7 @@ public class ProjectService {
 
     public ProjectDto.ProjectId saveProject(ProjectDto.ProjectForm projectForm) {
         // TODO: 로그인 기능 구현되면 wroteMember 채우기
-        Member wroteMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
+        Member wroteMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
 
         List<Member> contributedMembers = memberRepository.findAllById(projectForm.getContributedMembers());
         List<Tag> tags = tagRepository.findAllById(projectForm.getTags());
@@ -104,7 +104,7 @@ public class ProjectService {
     }
 
     public void updateProject(Long projectId, ProjectDto.ProjectForm projectForm) {
-        Member wroteMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
+        Member wroteMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
 
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
 
@@ -160,7 +160,7 @@ public class ProjectService {
 
     public void deleteProject(Long projectId) {
         // TODO: 로그인 기능 구현 후 요청한 유저 가져오기
-        Member requestMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
+        Member requestMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
 
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
         if (project.getWroteMember().equals(requestMember)){

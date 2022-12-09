@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -49,12 +50,12 @@ public class MemberService implements UserDetailsService {
     }
 
     public MemberDto.GetProfile getMemberProfile(Long memberId) {
-        Member foundMember = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
+        Member foundMember = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
         return MemberMapper.INSTANCE.memberToProfilePage(foundMember);
     }
 
     public void updateProfile(Long memberId, MemberDto.SetProfile setProfile) {
-        Member foundMember = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
+        Member foundMember = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
         ProfileImage profileImage = foundMember.getProfileImage();
 
         // 프로필 이미지가 없을 경우엔 새로 만듦, 있을 경우 url 업데이트
@@ -74,9 +75,12 @@ public class MemberService implements UserDetailsService {
 
 //    로그인
     @Override
-    public UserDetails loadUserByUsername(String email){
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         log.info("=========>" + email + "제대로 읽고 있나요");
                 Member member = memberRepository.findByEmail(email);
+                if (member == null){
+                    throw new UsernameNotFoundException(ErrorMessage.MEMBER_EMAIL_NOT_FOUND.getMessage());
+                }
 
                 return User.builder()
                         .username(member.getEmail())

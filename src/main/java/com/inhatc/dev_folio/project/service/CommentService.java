@@ -27,7 +27,7 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByProjectId(id);
 
         // TODO: 로그인 기능 구현 후 현재 로그인 된 사용자로 교체
-        Member member = memberRepository.findById(2L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_NOT_FOUND.getMessage()));
+        Member member = memberRepository.findById(2L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
 
         CommentMapper commentMapper = CommentMapper.INSTANCE;
         List<CommentDto.View> views = new ArrayList<>();
