@@ -38,19 +38,18 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 헤더 값 받아옴
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-
-        // 헤더 값 검증
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        // token 받아옴
-        String token = authorizationHeader.substring("Bearer ".length());
-
         try{
+            // 헤더 값 받아옴
+            String authorizationHeader = request.getHeader(AUTHORIZATION);
+
+            // 헤더 값 검증
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                throw new JWTVerificationException("토큰 유효하지 않음");
+            }
+
+            // token 받아옴
+            String token = authorizationHeader.substring("Bearer ".length());
+
             // JWT verify
             DecodedJWT decodedJWT = jwtTokenUtil.verify(token);
 
