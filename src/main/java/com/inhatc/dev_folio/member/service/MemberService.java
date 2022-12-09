@@ -1,7 +1,6 @@
 package com.inhatc.dev_folio.member.service;
 
 import com.inhatc.dev_folio.constant.ErrorMessage;
-import com.inhatc.dev_folio.member.constant.Role;
 import com.inhatc.dev_folio.member.dto.MemberDto;
 import com.inhatc.dev_folio.member.dto.MemberRegDto;
 import com.inhatc.dev_folio.member.entity.Email;
@@ -9,8 +8,7 @@ import com.inhatc.dev_folio.member.entity.Member;
 import com.inhatc.dev_folio.member.entity.ProfileImage;
 import com.inhatc.dev_folio.member.exception.EmailAlreadyException;
 import com.inhatc.dev_folio.member.mapper.MemberMapper;
-import com.inhatc.dev_folio.member.repository.EmailCustomRepository;
-import com.inhatc.dev_folio.member.repository.EmailRepostitory;
+import com.inhatc.dev_folio.member.repository.EmailRepository;
 import com.inhatc.dev_folio.member.repository.MemberRepository;
 import com.inhatc.dev_folio.member.repository.ProfileImageRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +30,7 @@ import java.util.UUID;
 public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final ProfileImageRepository profileImageRepository;
-    private final EmailRepostitory emailRepostitory;
+    private final EmailRepository emailRepository;
 
     private final EmailService emailService;
 
@@ -49,7 +47,7 @@ public class MemberService implements UserDetailsService {
     private MemberRegDto regMember(MemberRegDto regDto){
 //        일단 중복 이메일 있는지 확인
         duplicatedMember(regDto.getEmail());
-        Email email = emailRepostitory.save(
+        Email email = emailRepository.save(
                 Email.builder()
                         .email(regDto.getEmail())
                         .authToken(UUID.randomUUID().toString())
@@ -69,7 +67,7 @@ public class MemberService implements UserDetailsService {
     @Transactional
     public void confirmEmail(MemberRegDto regDto){
 //        이메일 인증 발급 됐는지 확인
-        Email email = emailRepostitory.findValidAuthByEmail(regDto.getEmail(), regDto.getToken(), LocalDateTime.now())
+        Email email = emailRepository.findValidAuthByEmail(regDto.getEmail(), regDto.getToken(), LocalDateTime.now())
                 .orElseThrow(EntityNotFoundException::new);
 
 //        한 번 사용했으니까 사용 다시 못 하게 막아놓는다.
