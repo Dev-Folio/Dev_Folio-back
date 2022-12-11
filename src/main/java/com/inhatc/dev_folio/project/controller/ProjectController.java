@@ -23,32 +23,44 @@ public class ProjectController {
     public Page<ProjectDto.Card> search(
             @RequestBody SearchDto.Detail searchDto,
             @PageableDefault(size = 12) Pageable pageable) {
-        log.info("searchDto >>> " + searchDto.toString());
+        log.info("searchDto:{}", searchDto.toString());
         return projectService.search(searchDto, pageable);
     }
 
+    /**
+     * 프로젝트 조회
+     */
     @GetMapping("/project/{projectId}")
     public ProjectDto.Detail getProject(@PathVariable Long projectId) {
         log.info("getProject(projectId:{})", projectId.toString());
         return projectService.getProject(projectId);
     }
 
+    /**
+     * 프로젝트 생성
+     */
     @PostMapping("/project")
-    public ProjectDto.ProjectId postProject(@RequestBody ProjectDto.ProjectForm projectForm){
-        log.info("postProject(createProject:{})", projectForm.toString());
-        return projectService.saveProject(projectForm);
+    public ProjectDto.ProjectId postProject(@RequestBody ProjectDto.ProjectForm projectForm, Principal principal) {
+        log.info("postProject(projectForm:{}, email:{})", projectForm.toString(), principal.getName());
+        return projectService.saveProject(projectForm, principal.getName());
     }
 
+    /**
+     * 프로젝트 수정
+     */
     @PutMapping("/project/{projectId}")
-    public void putProject(@PathVariable Long projectId, @RequestBody ProjectDto.ProjectForm projectForm){
-        log.info("putProject(projectId:{}, createProject:{})", projectId, projectForm.toString());
-        projectService.updateProject(projectId, projectForm);
+    public void putProject(@PathVariable Long projectId, @RequestBody ProjectDto.ProjectForm projectForm, Principal principal) {
+        log.info("putProject(projectId:{}, createProject:{}, email:{})", projectId, projectForm.toString(), principal.getName());
+        projectService.updateProject(projectId, projectForm, principal.getName());
     }
 
+    /**
+     * 프로젝트 삭제
+     */
     @DeleteMapping("/project/{projectId}")
-    public void deleteProject(@PathVariable Long projectId){
-        log.info("deleteProject(projectId:{})", projectId);
-        projectService.deleteProject(projectId);
+    public void deleteProject(@PathVariable Long projectId, Principal principal) {
+        log.info("deleteProject(projectId:{}, email:{})", projectId, principal.getName());
+        projectService.deleteProject(projectId, principal.getName());
     }
 
     /**

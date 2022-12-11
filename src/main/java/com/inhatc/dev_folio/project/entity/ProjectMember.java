@@ -1,13 +1,12 @@
 package com.inhatc.dev_folio.project.entity;
 
-import javax.persistence.*;
-
 import com.inhatc.dev_folio.member.entity.Member;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
 @Getter

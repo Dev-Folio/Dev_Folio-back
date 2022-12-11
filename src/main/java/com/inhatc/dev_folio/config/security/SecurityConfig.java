@@ -47,15 +47,23 @@ public class SecurityConfig {
                 // 댓글 작성, 수정, 삭제에는 인증 필요
                 .mvcMatchers(HttpMethod.GET, "/project/*/comment").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/project/*/comment").authenticated()
-                .mvcMatchers("/project/comment/*").authenticated()
+                .mvcMatchers(HttpMethod.PUT, "/project/comment/*").authenticated()
+                .mvcMatchers(HttpMethod.DELETE, "/project/comment/*").authenticated()
+
+                // 프로젝트 생성, 수정, 삭제에는 인증 필요
+                .mvcMatchers(HttpMethod.GET, "/project/*").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/project").authenticated()
+                .mvcMatchers(HttpMethod.PUT, "/project/*").authenticated()
+                .mvcMatchers(HttpMethod.DELETE, "/project/*").authenticated()
 
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .mvcMatchers("/").hasRole("ADMIN")
                 .anyRequest().permitAll();
 
+        // 예외 처리
         http.exceptionHandling()
-                .authenticationEntryPoint(customAuthenticationEntryPoint)
-                .accessDeniedHandler(customAccessDeniedHandler);
+                .authenticationEntryPoint(customAuthenticationEntryPoint) // 401
+                .accessDeniedHandler(customAccessDeniedHandler); // 403
 
         return http.build();
     }

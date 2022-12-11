@@ -58,7 +58,7 @@ public class ProjectService {
         // likes 조회
         Likes foundLike = likesRepository.findByProjectIdAndMemberEmail(projectId, email).orElse(null);
         // 있으면 삭제
-        if (foundLike != null){
+        if (foundLike != null) {
             likesRepository.delete(foundLike);
             return ProjectDto.Like.builder().like(false).build();
         }
@@ -72,9 +72,8 @@ public class ProjectService {
         }
     }
 
-    public ProjectDto.ProjectId saveProject(ProjectDto.ProjectForm projectForm) {
-        // TODO: 로그인 기능 구현되면 wroteMember 채우기
-        Member wroteMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
+    public ProjectDto.ProjectId saveProject(ProjectDto.ProjectForm projectForm, String email) {
+        Member wroteMember = memberRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
 
         List<Member> contributedMembers = memberRepository.findAllById(projectForm.getContributedMembers());
         List<Tag> tags = tagRepository.findAllById(projectForm.getTags());
@@ -106,7 +105,7 @@ public class ProjectService {
             projectMemberRepository.save(projectMember);
         }
 
-        for (String github : projectForm.getGithub()){
+        for (String github : projectForm.getGithub()) {
             GithubUrl githubUrl = GithubUrl.builder()
                     .project(project)
                     .url(github)
@@ -117,12 +116,11 @@ public class ProjectService {
         return ProjectDto.ProjectId.builder().projectId(project.getId()).build();
     }
 
-    public void updateProject(Long projectId, ProjectDto.ProjectForm projectForm) {
-        Member wroteMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
-
+    public void updateProject(Long projectId, ProjectDto.ProjectForm projectForm, String email) {
+        Member wroteMember = memberRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
 
-        if (!project.getWroteMember().equals(wroteMember)){
+        if (!project.getWroteMember().equals(wroteMember)) {
             throw new IllegalStateException(ErrorMessage.PROJECT_ACCESS_DENIED.getMessage());
         }
 
@@ -162,7 +160,7 @@ public class ProjectService {
         githubUrlRepository.deleteAll(githubUrls);
 
         // 그리고 새로 추가
-        for (String github : projectForm.getGithub()){
+        for (String github : projectForm.getGithub()) {
             GithubUrl githubUrl = GithubUrl.builder()
                     .project(project)
                     .url(github)
@@ -172,13 +170,12 @@ public class ProjectService {
 
     }
 
-    public void deleteProject(Long projectId) {
-        // TODO: 로그인 기능 구현 후 요청한 유저 가져오기
-        Member requestMember = memberRepository.findById(1L).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
-
+    public void deleteProject(Long projectId, String email) {
+        Member requestMember = memberRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_ID_NOT_FOUND.getMessage()));
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
-        if (project.getWroteMember().equals(requestMember)){
-            projectRepository.deleteById(projectId);
+
+        if (project.getWroteMember().equals(requestMember)) {
+            projectRepository.delete(project);
         } else {
             throw new IllegalStateException(ErrorMessage.PROJECT_ACCESS_DENIED.getMessage());
         }

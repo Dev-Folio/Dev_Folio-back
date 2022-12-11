@@ -53,23 +53,23 @@ public class Project {
     @Builder.Default
     private int views = 0;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<Likes> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<ProjectTag> projectTags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<ProjectMember> contributedMembers = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wrote_member_id", nullable = false)
     private Member wroteMember;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<GithubUrl> githubUrls = new ArrayList<>();
 
     @CreatedDate
@@ -80,7 +80,7 @@ public class Project {
     @Column(nullable = false)
     private LocalDateTime modifiedDate;
 
-    public void updateProject(ProjectDto.ProjectForm projectForm){
+    public void updateProject(ProjectDto.ProjectForm projectForm) {
         this.thumbnail = projectForm.getThumbnail();
         this.name = projectForm.getProjectName();
         this.startDate = projectForm.getStartDate();
