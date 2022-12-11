@@ -2,9 +2,7 @@ package com.inhatc.dev_folio.project.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +12,8 @@ public class CommentDto {
     @ToString
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class View {
         private Long commentId;
         private String profileImage;
@@ -23,7 +23,7 @@ public class CommentDto {
         private LocalDateTime createdDate;
         private LocalDateTime modifiedDate;
 
-        public void setSelf(boolean self){
+        public void setSelf(boolean self) {
             this.self = self;
         }
     }
@@ -32,6 +32,8 @@ public class CommentDto {
     @ToString
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Contents {
         private String contents;
     }

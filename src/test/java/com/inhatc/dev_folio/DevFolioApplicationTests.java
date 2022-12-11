@@ -1,11 +1,13 @@
 package com.inhatc.dev_folio;
 
+import com.inhatc.dev_folio.category.entity.Comment;
 import com.inhatc.dev_folio.member.constant.Role;
 import com.inhatc.dev_folio.member.entity.Member;
 import com.inhatc.dev_folio.member.repository.MemberRepository;
 import com.inhatc.dev_folio.project.entity.Project;
 import com.inhatc.dev_folio.project.entity.ProjectTag;
 import com.inhatc.dev_folio.project.entity.Tag;
+import com.inhatc.dev_folio.project.repository.CommentRepository;
 import com.inhatc.dev_folio.project.repository.ProjectRepository;
 import com.inhatc.dev_folio.project.repository.ProjectTagRepository;
 import com.inhatc.dev_folio.project.repository.TagRepository;
@@ -30,6 +32,8 @@ class DevFolioApplicationTests {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
     @DisplayName("테스트 데이터 삽입")
     @Test
@@ -105,6 +109,24 @@ class DevFolioApplicationTests {
         for (Project project : projects) {
             ProjectTag projectTag = ProjectTag.builder().project(project).tag(javascript).build();
             projectTagRepository.save(projectTag);
+        }
+
+        // Save Comments
+        for (int i = 0; i < 5; i++){
+            Comment comment = Comment.builder()
+                    .contents("테스트 댓글입니다" + i)
+                    .member(admin)
+                    .project(projectRepository.findById(1L).orElseThrow())
+                    .build();
+            commentRepository.save(comment);
+        }
+        for (int i = 0; i < 5; i++){
+            Comment comment = Comment.builder()
+                    .contents("테스트 댓글입니다" + i)
+                    .member(member)
+                    .project(projectRepository.findById(1L).orElseThrow())
+                    .build();
+            commentRepository.save(comment);
         }
     }
 }

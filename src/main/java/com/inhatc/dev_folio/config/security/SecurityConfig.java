@@ -7,6 +7,7 @@ import com.inhatc.dev_folio.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -39,8 +40,15 @@ public class SecurityConfig {
 
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**").permitAll()
+
                 // 좋아요 여부 표시할 때는 인증 필요
                 .mvcMatchers("/project/*/like").authenticated()
+
+                // 댓글 작성, 수정, 삭제에는 인증 필요
+                .mvcMatchers(HttpMethod.GET, "/project/*/comment").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/project/*/comment").authenticated()
+                .mvcMatchers("/project/comment/*").authenticated()
+
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .mvcMatchers("/").hasRole("ADMIN")
                 .anyRequest().permitAll();

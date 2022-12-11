@@ -44,19 +44,19 @@ public class ProjectService {
         return new PageImpl<>(cards, projectPage.getPageable(), projectPage.getTotalPages());
     }
 
-    public ProjectDto.Detail getProject(Long id) {
-        Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
+    public ProjectDto.Detail getProject(Long projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
         return ProjectMapper.INSTANCE.projectToDetail(project);
     }
 
-    public ProjectDto.Like getLike(Long projectId, String memberEmail) {
-        boolean isLike = likesRepository.existsByProjectIdAndMemberEmail(projectId, memberEmail);
+    public ProjectDto.Like getLike(Long projectId, String email) {
+        boolean isLike = likesRepository.existsByProjectIdAndMemberEmail(projectId, email);
         return ProjectDto.Like.builder().like(isLike).build();
     }
 
-    public ProjectDto.Like clickLike(Long projectId, String memberEmail) {
+    public ProjectDto.Like clickLike(Long projectId, String email) {
         // likes 조회
-        Likes foundLike = likesRepository.findByProjectIdAndMemberEmail(projectId, memberEmail).orElse(null);
+        Likes foundLike = likesRepository.findByProjectIdAndMemberEmail(projectId, email).orElse(null);
         // 있으면 삭제
         if (foundLike != null){
             likesRepository.delete(foundLike);
@@ -64,7 +64,7 @@ public class ProjectService {
         }
         // 없으면 생성
         else {
-            Member member = memberRepository.findByEmail(memberEmail).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_EMAIL_NOT_FOUND.getMessage()));
+            Member member = memberRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_EMAIL_NOT_FOUND.getMessage()));
             Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
             Likes like = Likes.builder().member(member).project(project).build();
             likesRepository.save(like);
