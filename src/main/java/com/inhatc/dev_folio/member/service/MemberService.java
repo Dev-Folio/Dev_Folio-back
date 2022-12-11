@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -128,6 +129,10 @@ public class MemberService implements UserDetailsService {
                 .password(member.getPassword())
                 .roles(member.getRole().toString())
                 .build();
+    }
+
+    public Member getMemberByPrincipal(Principal principal){
+        return memberRepository.findByEmail(principal.getName()).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_EMAIL_NOT_FOUND.getMessage()));
     }
 
 }

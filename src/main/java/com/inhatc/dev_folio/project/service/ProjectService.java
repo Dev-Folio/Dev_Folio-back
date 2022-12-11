@@ -18,12 +18,14 @@ import com.inhatc.dev_folio.project.dto.SearchDto;
 import com.inhatc.dev_folio.project.mapper.ProjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
@@ -32,6 +34,7 @@ public class ProjectService {
     private final ProjectTagRepository projectTagRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final GithubUrlRepository githubUrlRepository;
+    private final LikesRepository likesRepository;
 
     public Page<ProjectDto.Card> search(SearchDto.Detail searchDto, Pageable pageable) {
         // Page<Project>를 Page<ProjectDto.Card>로 매핑
@@ -46,16 +49,27 @@ public class ProjectService {
         return ProjectMapper.INSTANCE.projectToDetail(project);
     }
 
-    public ProjectDto.Like getLike(Long id) {
-        // TODO: 회원가입 기능이 구현된 후 만들것.
-        // Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당 id의 프로젝트가 없습니다."));
-        // return project.getLikes();
-        return null;
+    public ProjectDto.Like getLike(Long projectId, String memberEmail) {
+        boolean isLike = likesRepository.existsByProjectIdAndMemberEmail(projectId, memberEmail);
+        return ProjectDto.Like.builder().like(isLike).build();
     }
 
-    public ProjectDto.Like clickLike(Long id) {
-        // TODO: 회원가입 기능이 구현된 후 만들것.
-        return null;
+    public ProjectDto.Like clickLike(Long projectId, String memberEmail) {
+        // likes 조회
+        Likes foundLike = likesRepository.findByProjectIdAndMemberEmail(projectId, memberEmail).orElse(null);
+        // 있으면 삭제
+        if (foundLike != null){
+            likesRepository.delete(foundLike);
+            return ProjectDto.Like.builder().like(false).build();
+        }
+        // 없으면 생성
+        else {
+            Member member = memberRepository.findByEmail(memberEmail).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_EMAIL_NOT_FOUND.getMessage()));
+            Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.PROJECT_NOT_FOUND.getMessage()));
+            Likes like = Likes.builder().member(member).project(project).build();
+            likesRepository.save(like);
+            return ProjectDto.Like.builder().like(true).build();
+        }
     }
 
     public ProjectDto.ProjectId saveProject(ProjectDto.ProjectForm projectForm) {

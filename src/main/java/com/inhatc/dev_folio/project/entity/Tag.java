@@ -1,5 +1,6 @@
 package com.inhatc.dev_folio.project.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -29,8 +30,8 @@ public class Tag {
     private String color;
 
     @OneToMany(mappedBy = "tag")
-    private List<ProjectTag> projectTags;
+    private List<ProjectTag> projectTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "tag")
-    private List<CategoryTag> categoryTags;
+    private List<CategoryTag> categoryTags = new ArrayList<>();
 }

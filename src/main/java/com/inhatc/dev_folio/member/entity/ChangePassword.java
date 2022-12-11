@@ -28,8 +28,7 @@ public class ChangePassword {
     @Column(nullable = false)
     private String token;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @OneToOne(mappedBy = "changePassword")
     private Member member;
 
     @Column(nullable = false)

@@ -1,14 +1,13 @@
 package com.inhatc.dev_folio.project.mapper;
 
-import java.util.List;
-
+import com.inhatc.dev_folio.category.entity.CategoryTag;
+import com.inhatc.dev_folio.project.dto.TagDto;
+import com.inhatc.dev_folio.project.entity.Tag;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import com.inhatc.dev_folio.category.entity.CategoryTag;
-import com.inhatc.dev_folio.project.dto.TagDto;
-import com.inhatc.dev_folio.project.entity.Tag;
+import java.util.List;
 
 @Mapper
 public interface TagMapper {

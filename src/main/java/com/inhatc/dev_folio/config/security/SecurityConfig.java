@@ -39,6 +39,8 @@ public class SecurityConfig {
 
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**").permitAll()
+                // 좋아요 여부 표시할 때는 인증 필요
+                .mvcMatchers("/project/*/like").authenticated()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .mvcMatchers("/").hasRole("ADMIN")
                 .anyRequest().permitAll();

@@ -2,6 +2,7 @@ package com.inhatc.dev_folio.project.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -52,26 +53,24 @@ public class Project {
     @Builder.Default
     private int views = 0;
 
-    @Column(nullable = false)
-    @ColumnDefault("0")
-    @Builder.Default
-    private int likes = 0;
+    @OneToMany(mappedBy = "project")
+    private List<Likes> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "project")
-    private List<ProjectTag> projectTags;
+    private List<ProjectTag> projectTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "project")
-    private List<ProjectMember> contributedMembers;
+    private List<ProjectMember> contributedMembers = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wrote_member_id", nullable = false)
     private Member wroteMember;
 
     @OneToMany(mappedBy = "project")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "project")
-    private List<GithubUrl> githubUrls;
+    private List<GithubUrl> githubUrls = new ArrayList<>();
 
     @CreatedDate
     @Column(nullable = false)

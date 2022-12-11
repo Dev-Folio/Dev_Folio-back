@@ -117,7 +117,7 @@ class CustomJPAQuery<T> extends JPAQuery<T> {
                 for (Sort.Order order : pageable.getSort()) {
                     Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
                     switch (order.getProperty()) {
-                        case "likes" -> query.orderBy(new OrderSpecifier<>(direction, project.likes));
+                        case "likes" -> query.orderBy(new OrderSpecifier<>(direction, project.likes.size()));
                         case "date" -> query.orderBy(new OrderSpecifier<>(direction, project.createdDate));
                         default -> throw new RuntimeException(ErrorMessage.PROJECT_BAD_SEARCH_PARAMETER.getMessage());
                     }

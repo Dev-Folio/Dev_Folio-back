@@ -1,5 +1,6 @@
 package com.inhatc.dev_folio.category.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -25,5 +26,5 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
-    private List<CategoryTag> categoryTags;
+    private List<CategoryTag> categoryTags = new ArrayList<>();
 }

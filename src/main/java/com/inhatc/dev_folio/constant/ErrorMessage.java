@@ -25,7 +25,10 @@ public enum ErrorMessage {
 
     // Comment
     COMMENT_NOT_FOUND("해당 id의 댓글이 없습니다."),
-    COMMENT_ALREADY_DELETED("이미 삭제된 댓글입니다.");
+    COMMENT_ALREADY_DELETED("이미 삭제된 댓글입니다."),
+
+    // Likes
+    Likes_NOT_FOUND("해당하는 좋아요가 없습니다.");
 
     private final String message;
 }

@@ -1,11 +1,12 @@
 package com.inhatc.dev_folio.member.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
-import com.inhatc.dev_folio.member.dto.MemberDto;
+import com.inhatc.dev_folio.project.entity.Likes;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -45,19 +46,22 @@ public class Member {
     private String phone;
     private String info;
 
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_image_id")
     private ProfileImage profileImage;
 
     @OneToMany(mappedBy = "member")
-    private List<ProjectMember> contributedProjects;
+    private List<ProjectMember> contributedProjects = new ArrayList<>();
 
     @OneToMany(mappedBy = "wroteMember")
-    private List<Project> wroteProjects;
+    private List<Project> wroteProjects = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member")
-    private ChangePassword passwordChange;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "change_password_id")
+    private ChangePassword changePassword;
+
+    @OneToMany(mappedBy = "member")
+    private List<Likes> likes = new ArrayList<>();
 
     @CreatedDate
     @Column(nullable = false)
