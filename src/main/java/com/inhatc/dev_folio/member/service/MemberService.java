@@ -39,9 +39,8 @@ public class MemberService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public List<MemberDto.View> searchMember(MemberDto.Search search) {
-        String query = search.getQuery();
-        List<Member> members = memberRepository.findByEmailContainsOrNameContains(query, query);
+    public List<MemberDto.View> searchMember(String query) {
+        List<Member> members = memberRepository.findTop5ByEmailContainsOrNameContains(query, query);
         return MemberMapper.INSTANCE.memberListToViewList(members);
     }
 

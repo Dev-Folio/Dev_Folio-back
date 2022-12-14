@@ -19,9 +19,9 @@ public class MemberController {
      * 회원 검색
      */
     @GetMapping("/search/member")
-    public List<MemberDto.View> searchMember(@RequestBody MemberDto.Search search) {
-        log.info("searchMember(query:{})", search.getQuery());
-        return memberService.searchMember(search);
+    public List<MemberDto.View> searchMember(@RequestParam String query) {
+        log.info("searchMember(query:{})", query);
+        return memberService.searchMember(query);
     }
 
     //    로그인

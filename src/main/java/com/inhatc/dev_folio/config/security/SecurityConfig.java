@@ -60,7 +60,6 @@ public class SecurityConfig {
                 .mvcMatchers(HttpMethod.GET, "/member").authenticated()
 
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
-                .mvcMatchers("/").hasRole("ADMIN")
                 .anyRequest().permitAll();
 
         // 예외 처리
