@@ -19,7 +19,7 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public Page<ProjectDto.Card> search(
             @RequestBody SearchDto.Detail searchDto,
             @PageableDefault(size = 12) Pageable pageable) {

@@ -59,6 +59,8 @@ public class SecurityConfig {
                 // 로그인 확인
                 .mvcMatchers(HttpMethod.GET, "/member").authenticated()
 
+                .mvcMatchers(HttpMethod.POST, "/search").permitAll()
+
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll();
 
