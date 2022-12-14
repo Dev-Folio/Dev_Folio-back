@@ -135,4 +135,8 @@ public class MemberService implements UserDetailsService {
         return memberRepository.findByEmail(principal.getName()).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_EMAIL_NOT_FOUND.getMessage()));
     }
 
+    public MemberDto.View getMemberView(String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.MEMBER_EMAIL_NOT_FOUND.getMessage()));
+        return MemberMapper.INSTANCE.memberToView(member);
+    }
 }

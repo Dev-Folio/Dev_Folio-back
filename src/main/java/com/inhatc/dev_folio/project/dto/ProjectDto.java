@@ -25,8 +25,8 @@ public class ProjectDto {
         private String projectName;
         private List<TagDto> tags;
         private MemberDto.View wroteMember;
-        private int views;
         private int likes;
+        private int comments;
     }
 
     @Getter

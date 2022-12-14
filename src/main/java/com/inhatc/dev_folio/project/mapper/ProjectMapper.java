@@ -17,6 +17,7 @@ public interface ProjectMapper extends MemberMapper, LikeMapper, ProjectMemberMa
     @Mapping(source = "name", target = "projectName")
     @Mapping(source = "projectTags", target = "tags")
     @Mapping(target = "likes", expression = "java(project.getLikes().size())")
+    @Mapping(target = "comments", expression = "java(project.getComments().size())")
     ProjectDto.Card projectToCard(Project project);
 
     List<ProjectDto.Card> projectListToCardList(List<Project> projects);

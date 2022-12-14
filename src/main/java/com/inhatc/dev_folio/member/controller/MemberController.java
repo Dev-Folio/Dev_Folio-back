@@ -58,6 +58,8 @@ public class MemberController {
      * 로그인 확인 (시큐리티 authenticated)
      */
     @GetMapping("/member")
-    public void checkLogin() {
+    public MemberDto.View checkLogin(Principal principal) {
+        log.info("checkLogin()");
+        return memberService.getMemberView(principal.getName());
     }
 }
