@@ -1,6 +1,7 @@
 package com.inhatc.dev_folio.member.controller;
 
 import com.inhatc.dev_folio.member.dto.MemberDto;
+import com.inhatc.dev_folio.member.dto.MemberRegDto;
 import com.inhatc.dev_folio.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,13 +28,21 @@ public class MemberController {
     //    로그인
     @GetMapping("/login")
     public String login() {
+        log.info("로그인 접속");
         return "";
     }
 
-    //    회원가입 리턴 어떻게 넣을까 고민 중이었어
 
-    //    @GetMapping("/signup")
-    //    public String
+    @GetMapping("/signup")
+    public void signup(@RequestBody MemberRegDto memberRegDto){
+        log.info(memberRegDto.getEmail());
+        memberService.regMember(memberRegDto);
+    }
+
+//    @PostMapping("/signup/check")
+//    public boolean signupCheck(@RequestBody ){
+//        return true;
+//    }
 
 
     /**
