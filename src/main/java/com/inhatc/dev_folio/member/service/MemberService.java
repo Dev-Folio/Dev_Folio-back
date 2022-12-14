@@ -47,7 +47,7 @@ public class MemberService implements UserDetailsService {
 
 
     //    이메일 중복 있는지 확인 후 이메일 보내기
-    private MemberRegDto regMember(MemberRegDto regDto) {
+    public MemberRegDto regMember(MemberRegDto regDto) {
         //        일단 중복 이메일 있는지 확인
         duplicatedMember(regDto.getEmail());
         Email email = emailRepository.save(
