@@ -2,6 +2,7 @@ package com.inhatc.dev_folio.member.controller;
 
 import com.inhatc.dev_folio.member.dto.MemberDto;
 import com.inhatc.dev_folio.member.dto.MemberRegDto;
+import com.inhatc.dev_folio.member.entity.Member;
 import com.inhatc.dev_folio.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,9 +35,13 @@ public class MemberController {
 
 
     @GetMapping("/signup")
-    public void signup(@RequestBody MemberRegDto memberRegDto){
-        log.info(memberRegDto.getEmail());
-        memberService.regMember(memberRegDto);
+    public void signup(){
+    }
+
+    @PostMapping(value = "/signup")
+    public Member memberSave(Member member){
+
+        return memberService.saveMember(member);
     }
 
 //    @PostMapping("/signup/check")
