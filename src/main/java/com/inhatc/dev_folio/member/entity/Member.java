@@ -1,6 +1,7 @@
 package com.inhatc.dev_folio.member.entity;
 
 import com.inhatc.dev_folio.member.constant.Role;
+import com.inhatc.dev_folio.member.dto.MemberDto;
 import com.inhatc.dev_folio.project.entity.Likes;
 import com.inhatc.dev_folio.project.entity.Project;
 import com.inhatc.dev_folio.project.entity.ProjectMember;
@@ -8,6 +9,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -69,6 +71,15 @@ public class Member {
     @Column(nullable = false)
     private LocalDateTime modifiedDate;
 
+    public static Member createUser(MemberDto memberDto, PasswordEncoder passwordEncoder){
+        Member member = new Member();
+        member.setEmail(memberDto.getEmail());
+        member.setName(memberDto.getName());
+        String password = passwordEncoder.encode(memberDto.getPassword());
+        member.setPassword(password);
+        member.setRole(Role.MEMBER);
+        return member;
+    }
 
     public void updateInfo(String info) {
         this.info = info;

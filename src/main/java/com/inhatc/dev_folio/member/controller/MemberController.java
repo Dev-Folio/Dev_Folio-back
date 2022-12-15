@@ -1,13 +1,14 @@
 package com.inhatc.dev_folio.member.controller;
 
 import com.inhatc.dev_folio.member.dto.MemberDto;
-import com.inhatc.dev_folio.member.dto.MemberRegDto;
 import com.inhatc.dev_folio.member.entity.Member;
 import com.inhatc.dev_folio.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @Slf4j
 public class MemberController {
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 회원 검색
@@ -38,16 +40,12 @@ public class MemberController {
     public void signup(){
     }
 
-    @PostMapping(value = "/signup")
-    public Member memberSave(Member member){
+        @PostMapping(value = "/signup")
+        public Member memberSave(@Valid MemberDto memberDto){
+            Member member = Member.createUser(memberDto,passwordEncoder);
 
-        return memberService.saveMember(member);
+            return memberService.saveMember(member);
     }
-
-//    @PostMapping("/signup/check")
-//    public boolean signupCheck(@RequestBody ){
-//        return true;
-//    }
 
 
     /**

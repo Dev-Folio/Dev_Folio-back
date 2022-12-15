@@ -3,11 +3,23 @@ package com.inhatc.dev_folio.member.dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import com.inhatc.dev_folio.member.constant.Role;
+import com.inhatc.dev_folio.member.entity.Member;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
+@Getter
+@Setter
 public class MemberDto {
 
+    private String email;
+    private String name;
+    private String phone;
+    private String password;
+    private Role role;
 
+    private static ModelMapper modelMapper = new ModelMapper();
+    public static MemberDto of(Member member){return modelMapper.map(member, MemberDto.class);}
 
     @Getter
     @ToString
