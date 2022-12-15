@@ -43,27 +43,31 @@ public class MemberService implements UserDetailsService {
         List<Member> members = memberRepository.findTop5ByEmailContainsOrNameContains(query, query);
         return MemberMapper.INSTANCE.memberListToViewList(members);
     }
-
-
-    //    이메일 중복 있는지 확인 후 이메일 보내기
-    public MemberRegDto regMember(MemberRegDto regDto) {
-        //        일단 중복 이메일 있는지 확인
-        duplicatedMember(regDto.getEmail());
-        Email email = emailRepository.save(
-                Email.builder()
-                        .email(regDto.getEmail())
-                        .authToken(UUID.randomUUID().toString())
-                        .expired(false)
-                        .build());
-
-        emailService.sendMail(email.getEmail(), email.getAuthToken());
-
-        return MemberRegDto.builder()
-                .id(email.getId())
-                .email(email.getEmail())
-                .token(email.getAuthToken())
-                .build();
+//회원가입
+    public Member saveMember(Member member){
+        duplicatedMember(member.getEmail());
+       return memberRepository.save(member);
     }
+
+//    //    이메일 중복 있는지 확인 후 이메일 보내기
+//    public MemberRegDto regMember(MemberRegDto regDto) {
+//        //        일단 중복 이메일 있는지 확인
+//        duplicatedMember(regDto.getEmail());
+//        Email email = emailRepository.save(
+//                Email.builder()
+//                        .email(regDto.getEmail())
+//                        .authToken(UUID.randomUUID().toString())
+//                        .expired(false)
+//                        .build());
+//
+//        emailService.sendMail(email.getEmail(), email.getAuthToken());
+//
+//        return MemberRegDto.builder()
+//                .id(email.getId())
+//                .email(email.getEmail())
+//                .token(email.getAuthToken())
+//                .build();
+//    }
 
     //    이메일 인증 실행
     @Transactional
@@ -77,15 +81,6 @@ public class MemberService implements UserDetailsService {
 
     }
 
-    //    회원가입 계속 진행
-    public Member saveMember(Member member) {
-
-        //        로그 찍어보기 위함.
-        Member myMember = memberRepository.save(member);
-        log.info("제대로 값이 들어갔나요 " + myMember);
-
-        return memberRepository.save(member);
-    }
 
     private void duplicatedMember(String email) {
         //        같은 값이 존재하면 안되니까 이메일이 존재할 경우 exception을 던진다
